@@ -2,179 +2,187 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>WAR — V3 Mapa Mundial</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070c1a">
+<meta name="description" content="WAR-LINE: estratégia de conquista de territórios no navegador. Mundos gerados a cada partida, solo contra CPUs ou online com amigos por código de sala.">
+<title>WAR-LINE</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070c1a'/%3E%3Cpath d='M10 44 L22 20 L32 36 L42 18 L54 44' fill='none' stroke='%2300e5ff' stroke-width='6' stroke-linejoin='round'/%3E%3Ccircle cx='42' cy='18' r='5' fill='%23ff4b5c'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@500;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<section id="menu">
-  <div class="command-shell">
-    <div class="scanline"></div>
-    <header class="command-header">
-      <div class="brand-lockup">
-        <div class="brand-mark">W</div>
-        <div>
-          <div class="eyebrow">COMMAND NETWORK // ONLINE</div>
-          <h1>WAR <span>COMMAND</span></h1>
-          <p>Strategic browser wargame • global theater</p>
-        </div>
+
+<!-- ============================ MENU ============================ -->
+<section id="menu" class="screen">
+  <div class="menu-bg"></div>
+  <div class="menu-shell">
+    <header class="menu-head">
+      <div class="logo"><svg viewBox="0 0 64 40" aria-hidden="true"><path d="M4 34 L18 8 L30 26 L42 6 L60 34" fill="none" stroke="currentColor" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/><circle cx="42" cy="6" r="5" fill="#ff4b5c"/></svg>
+        <div><h1>WAR<span>-</span>LINE</h1><p>estratégia de conquista · mundos gerados a cada partida</p></div></div>
+      <div class="head-actions">
+        <button class="icon-btn" id="m-sound" title="Som">🔊</button>
+        <button class="icon-btn" id="m-help" title="Como jogar">?</button>
       </div>
-      <div class="system-status"><i></i> SYSTEMS NOMINAL</div>
     </header>
 
-    <main class="command-grid">
-      <section class="briefing">
-        <div class="section-tag">MISSION CONTROL</div>
-        <h2>Monte sua operação.</h2>
-        <p>Jogue solo contra CPUs ou crie uma sala online e passe o código para seus amigos entrarem (voz, chat privado e alianças secretas incluídos).</p>
+    <main class="menu-grid">
+      <section class="card setup">
+        <div class="tag">CONFIGURAR OPERAÇÃO</div>
+        <label class="lbl" for="cfg-name">Seu nome</label>
+        <input id="cfg-name" maxlength="16" placeholder="Comandante" autocomplete="nickname">
 
-        <label class="field-label">CALLSIGN / NOME DO JOGADOR</label>
-        <input id="name" maxlength="18" placeholder="Ex.: COMMANDER">
-
-        <div class="setup-grid">
-          <div>
-            <label class="field-label">JOGADORES</label>
-            <select id="v4Players">
-              <option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option>
-            </select>
-          </div>
-          <div>
-            <label class="field-label">TEMPO POR TURNO</label>
-            <select id="v4Time">
-              <option>Sem limite</option><option>30 segundos</option><option selected>60 segundos</option><option>120 segundos</option>
-            </select>
-          </div>
+        <div class="row2">
+          <div><label class="lbl" for="cfg-players">Jogadores</label>
+            <select id="cfg-players"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option></select></div>
+          <div><label class="lbl" for="cfg-diff">Nível das CPUs</label>
+            <select id="cfg-diff"><option value="easy">Recruta (fácil)</option><option value="normal" selected>Veterano (normal)</option><option value="hard">General (difícil)</option><option value="mix">Misturado</option></select></div>
         </div>
 
-        <label class="field-label">SUA COR DE EXÉRCITO</label>
-        <select id="v4Color">
-          <option value="0" selected>Verde</option><option value="1">Vermelho</option><option value="2">Amarelo</option><option value="3">Azul</option><option value="4">Preto</option><option value="5">Branco</option>
-        </select>
+        <label class="lbl">Sua cor</label>
+        <div class="colors" id="cfg-color"></div>
 
-        <div class="switch-list">
-          <label><span>IA para preencher vagas</span><input id="v4AI" type="checkbox" checked><b></b></label>
-          <label><span>Alianças secretas</span><input id="v4Alliance" type="checkbox" checked><b></b></label>
-          <label><span>Missões secretas</span><input id="v4Mission" type="checkbox" checked><b></b></label>
-          <label><span>Comunicação por voz</span><input id="v4Voice" type="checkbox" checked><b></b></label>
+        <div class="row2">
+          <div><label class="lbl" for="cfg-size">Tamanho do mundo</label>
+            <select id="cfg-size"><option value="P">Pequeno · 30 territórios</option><option value="M" selected>Médio · 42 territórios</option><option value="G">Grande · 56 territórios</option></select></div>
+          <div><label class="lbl" for="cfg-seed">Semente do mapa</label>
+            <div class="seed-row"><input id="cfg-seed" inputmode="numeric" maxlength="9"><button class="icon-btn small" id="cfg-reseed" title="Sortear outro mundo">🎲</button></div></div>
         </div>
 
-        <button class="command-btn primary" onclick="v4StartSolo()"><span>▶</span> INICIAR OPERAÇÃO (SOLO vs CPU)</button>
-        <button class="command-btn secondary" id="v4Create" onclick="v4CreateRoom()">🌐 CRIAR SALA ONLINE</button>
-        <button class="command-btn secondary" onclick="v4ShowJoin()">ENTRAR EM UMA SALA POR CÓDIGO</button>
-
-        <div id="v4Join" class="join-panel">
-          <label class="field-label">CÓDIGO DA SALA</label>
-          <div class="inline-field"><input id="v4JoinCode" maxlength="8" placeholder="A7K92P" autocomplete="off" autocapitalize="characters"><button class="command-btn small" onclick="v4JoinRoom()">ENTRAR</button></div>
+        <div class="row2">
+          <div><label class="lbl" for="cfg-timer">Tempo por turno</label>
+            <select id="cfg-timer"><option value="0">Sem limite</option><option value="60">60 s</option><option value="90" selected>90 s</option><option value="150">150 s</option></select></div>
+          <div><label class="lbl" for="cfg-speed">Velocidade das CPUs</label>
+            <select id="cfg-speed"><option value="slow">Calma</option><option value="normal" selected>Normal</option><option value="fast">Rápida</option><option value="instant">Instantânea</option></select></div>
         </div>
+
+        <div class="switches">
+          <label class="sw"><input type="checkbox" id="cfg-missions" checked><span></span>Missões secretas <small>(desligado = dominação total)</small></label>
+          <label class="sw"><input type="checkbox" id="cfg-alliances" checked><span></span>Alianças secretas</label>
+        </div>
+
+        <div class="menu-btns">
+          <button class="btn primary big" id="btn-solo">▶ JOGAR SOLO vs CPU</button>
+          <button class="btn" id="btn-host">🌐 CRIAR SALA ONLINE</button>
+          <div class="join-row"><input id="join-code" maxlength="6" placeholder="CÓDIGO" autocomplete="off" autocapitalize="characters" aria-label="Código da sala"><button class="btn" id="btn-join">ENTRAR</button></div>
+        </div>
+        <div class="menu-msg" id="menu-msg" role="status"></div>
       </section>
 
-      <aside class="intel">
-        <div class="section-tag">GLOBAL THEATER</div>
-        <div class="radar">
-          <div class="radar-ring r1"></div><div class="radar-ring r2"></div><div class="radar-ring r3"></div>
-          <div class="radar-sweep"></div><div class="radar-cross x"></div><div class="radar-cross y"></div>
-          <img src="war-map.png" alt="Mapa do tabuleiro">
-        </div>
-        <div class="intel-row"><span>THEATER</span><b>WORLD</b></div>
-        <div class="intel-row"><span>PLAYERS</span><b>2 — 6</b></div>
-        <div class="intel-row"><span>MODE</span><b>STRATEGIC</b></div>
-        <div class="room-card">
-          <span>ROOM CODE</span>
-          <strong id="v4Code">------</strong>
-          <small id="v4RoomInfo">Clique em CRIAR SALA ONLINE: o código aparece aqui. Quem entrar pelo código aparece na lista abaixo.</small>
-          <div id="v4Lobby" class="lobby"></div>
-          <button class="command-btn primary" id="v4Start" style="display:none" onclick="hostStart()">▶ COMEÇAR PARTIDA</button>
+      <aside class="card intel">
+        <div class="tag">RECONHECIMENTO · <span id="prev-name">MUNDO</span></div>
+        <div class="preview"><svg id="preview" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid meet"></svg><div class="scan"></div></div>
+        <div class="prev-legend" id="prev-legend"></div>
+
+        <div class="lobby" id="lobby" hidden>
+          <div class="lobby-head"><span>SALA</span><strong id="lobby-code">------</strong><button class="icon-btn small" id="lobby-copy" title="Copiar link da sala">⧉</button></div>
+          <p class="hint" id="lobby-info"></p>
+          <ul class="lobby-list" id="lobby-list"></ul>
+          <div class="btn-row"><button class="btn primary" id="lobby-start" hidden>▶ COMEÇAR PARTIDA</button><button class="btn ghost" id="lobby-leave">Sair da sala</button></div>
         </div>
       </aside>
     </main>
-
-    <footer class="command-footer">
-      <span>WAR COMMAND v5</span>
-      <span>SALAS P2P • VOZ WEBRTC • GITHUB PAGES</span>
-      <span>GITHUB PAGES COMPATIBLE</span>
-    </footer>
+    <footer class="menu-foot"><span>WAR-LINE v6</span><span>solo · online P2P · voz · chat · alianças</span><span>funciona no GitHub Pages</span></footer>
   </div>
 </section>
 
-<section id="game" class="hidden">
- <div class="top">
-  <b>WAR</b>
-  <span id="turn">Seu turno</span>
-  <span class="room-tag" id="roomTag" onclick="copyCode()" title="Copiar código da sala">Solo</span>
-  <span class="top-actions"><button class="btn attack" id="attackBtn" onclick="uiAttack()">⚔ ATACAR</button><button class="btn fortify" id="fortifyBtn" onclick="uiFortify()">⇄ REMANEJAR</button><button class="btn newgame" onclick="newGame()" title="Nova partida / sair">↻</button><button class="btn endturn" id="endBtn" onclick="uiEnd()">ENCERRAR TURNO ▶</button></span>
- </div>
- <div class="layout">
-  <div class="boardFrame">
-   <div class="board" id="board">
-    <img class="map" src="war-map.png" alt="Tabuleiro enviado pelo jogador">
-    <svg class="overlay" viewBox="0 0 1500 1125" preserveAspectRatio="none" id="svg"></svg>
-    <div id="pieces"></div>
-   </div>
+<!-- ============================ JOGO ============================ -->
+<section id="game" class="screen" hidden>
+  <header class="hud">
+    <button class="logo-mini" id="g-menu" title="Menu da partida"><svg viewBox="0 0 64 40"><path d="M4 34 L18 8 L30 26 L42 6 L60 34" fill="none" stroke="currentColor" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/></svg></button>
+    <div class="turn" id="turn"></div>
+    <ol class="phases" id="phases"><li data-p="reinforce">Reforçar</li><li data-p="attack">Atacar</li><li data-p="fortify">Remanejar</li></ol>
+    <div class="hud-right">
+      <span class="timer" id="timer" hidden></span>
+      <span class="room" id="room-tag" title="Copiar link da sala"></span>
+      <button class="icon-btn" id="g-sound" title="Som">🔊</button>
+      <button class="icon-btn" id="g-help" title="Como jogar">?</button>
+      <button class="icon-btn side-toggle" id="g-side" title="Painel">☰</button>
+    </div>
+  </header>
+
+  <div class="stage">
+    <div class="mapwrap" id="mapwrap">
+      <svg id="map" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="tip" id="tip" hidden></div>
+      <div class="zoom">
+        <button id="z-in" title="Aproximar">+</button><button id="z-out" title="Afastar">−</button><button id="z-fit" title="Mapa inteiro">⤢</button>
+        <button id="z-names" title="Mostrar/ocultar nomes">Aa</button>
+      </div>
+      <div class="actionbar" id="actionbar"></div>
+      <div class="combat" id="combat" hidden></div>
+      <div class="feed" id="feed"></div>
+    </div>
+
+    <aside class="side" id="side">
+      <div class="tabs"><button data-tab="cmd" class="on">COMANDO</button><button data-tab="social">SOCIAL <i class="badge" id="badge" hidden></i></button><button data-tab="log">REGISTRO</button></div>
+      <div class="pane" id="pane-cmd">
+        <div class="box mission"><h3>Objetivo secreto <button class="link" id="mis-toggle">mostrar</button></h3><p id="mission" class="hidden-text"></p></div>
+        <div class="box"><h3>Cartas <small id="trade-val"></small></h3><div class="hand" id="hand"></div>
+          <button class="btn small full" id="trade-btn" disabled>Trocar 3 cartas</button>
+          <p class="hint">3 iguais · 3 diferentes (■ ● ▲) · 2 + coringa ★. Com 5 cartas a troca é obrigatória. Carta do território que você controla dá +2 tropas nele.</p></div>
+        <div class="box"><h3>Exércitos</h3><div class="players" id="players"></div></div>
+        <div class="box"><h3>Continentes</h3><div class="conts" id="conts"></div></div>
+      </div>
+      <div class="pane" id="pane-social" hidden>
+        <div class="box" id="voice-box"><h3>Voz</h3>
+          <div class="btn-row"><button class="btn small" id="v-join">🎙 Entrar na voz</button><button class="btn small ghost" id="v-mute" disabled>Mutar</button><button class="btn small ghost" id="v-deaf">🔕 Silenciar todos</button></div>
+          <div class="voice-list" id="voice-list"></div><p class="hint" id="voice-hint"></p></div>
+        <div class="box" id="ally-box"><h3>Alianças secretas</h3><div id="ally-list"></div><p class="hint">Aliados não podem se atacar. Só vocês dois sabem. Uma aliança por jogador; romper avisa o outro em segredo.</p></div>
+        <div class="box chat-box"><h3>Chat</h3>
+          <div class="chat" id="chat"></div>
+          <form class="chat-form" id="chat-form"><select id="chat-to" aria-label="Destinatário"></select><input id="chat-in" maxlength="240" placeholder="Mensagem…" autocomplete="off"><button class="btn small">Enviar</button></form>
+        </div>
+      </div>
+      <div class="pane" id="pane-log" hidden><div class="log" id="log"></div></div>
+    </aside>
   </div>
-  <aside class="side">
-   <div class="tabs"><button id="tabGame" class="on" onclick="setTab('game')">JOGO</button><button id="tabSocial" onclick="setTab('social')">SOCIAL <span id="socialBadge" class="badge" style="display:none"></span></button></div>
-   <div id="paneGame">
-   <div class="card"><h3>SEU EXÉRCITO</h3><div class="stats">
-    <div class="stat">Tropas<strong id="troops">0</strong></div>
-    <div class="stat">Territórios<strong id="territories">0</strong></div>
-   </div></div>
-   <div class="card"><h3>CAIXA DE TROPAS</h3><div class="troop-box">
-    <div class="troop-instructions">Arraste uma peça para um território seu para adicionar 1 tropa. Ao terminar (ataques e movimentos), clique em ENCERRAR TURNO.</div>
-    <div class="troop-reserve" id="troopReserve"></div>
-    <div class="reserve-count">Tropas disponíveis: <b id="reserveCount">0</b> <small id="reserveDetail"></small></div>
-   </div></div>
-   <div class="card"><h3>OBJETIVO SECRETO</h3>
-    <div class="sel" id="objText"></div>
-    <button class="btn small-btn" id="objBtn" onclick="toggleObj()">👁 VER OBJETIVO</button>
-   </div>
-   <div class="card"><h3>CARTAS DE TERRITÓRIO</h3>
-    <div class="hand" id="hand"></div>
-    <div class="reserve-count" id="tradeInfo"></div>
-    <button class="btn small-btn" id="tradeBtn" onclick="doTrade()">TROCAR 3 CARTAS</button>
-    <div class="trade-help">3 do mesmo símbolo • 3 diferentes (■ ● ▲) • 2 quaisquer + Coringa ★</div>
-   </div>
-   <div class="card"><h3>COMBATE</h3><div class="sel" id="selection">Arraste uma tropa da caixa para um território seu.<br><br>Clique em <b>ATACAR</b> para escolher origem e destino.</div></div>
-   <div class="card"><h3>CORES DOS JOGADORES</h3>
-    <div class="colors" id="colors"></div>
-   </div>
-   <div class="card"><h3>REGISTRO</h3><div class="log" id="log"></div></div>
-   <div class="card"><div style="font-size:12px;color:#b8c2c9;line-height:1.45">Turno: 1) troque cartas e posicione tropas • 2) ataque (1 a 3 dados; empate favorece a defesa) • 3) remanejamento: arraste uma peça sua para outro território seu conectado • 4) encerre o turno (se conquistou, compra 1 carta). Bônus de continente só pode ser posto dentro do próprio continente.</div></div>
-   </div>
-   <div id="paneSocial" style="display:none">
-    <div class="card" id="voiceCard"><h3>CHAT DE VOZ</h3>
-     <button class="btn small-btn mic" id="micBtn" onclick="toggleMic()">🎙 ENTRAR NA VOZ</button>
-     <button class="btn small-btn" id="deafBtn" onclick="toggleDeaf()">🔕 SILENCIAR TODOS</button>
-     <div class="voice-list" id="voiceList"></div>
-     <div class="trade-help" id="voiceHelp"></div>
-    </div>
-    <div class="card" id="allyCard"><h3>ALIANÇAS SECRETAS</h3>
-     <div class="ally-list" id="allyList"></div>
-     <div class="trade-help" id="allyNote"></div>
-    </div>
-    <div class="card"><h3>CHAT</h3>
-     <div class="chat-list" id="chatList"></div>
-     <form class="chat-form" onsubmit="return sendChat(event)">
-      <select id="chatTo"></select>
-      <div class="chat-send"><input id="chatInput" maxlength="300" placeholder="Mensagem…" autocomplete="off"><button class="btn small-btn" type="submit">ENVIAR</button></div>
-     </form>
-     <div class="trade-help">“Todos” é público. Escolhendo um jogador, só ele (e você) recebe a mensagem.</div>
-    </div>
-   </div>
-  </aside>
- </div>
 </section>
 
-<div class="modal hidden" id="modal">
- <div class="combat">
-  <h2 id="combatTitle">Combate</h2>
-  <div id="diceChoice" class="dice-choice"></div>
-  <div id="dice"></div>
-  <p id="combatResult"></p>
-  <button class="btn primary" id="combatContinue" onclick="closeModal()">CONTINUAR</button>
- </div>
+<!-- ============================ MODAIS ============================ -->
+<div class="modal" id="m-howto" hidden>
+  <div class="mcard wide">
+    <button class="x" data-close>×</button>
+    <h2>Como jogar</h2>
+    <div class="how">
+      <div><b>🎯 Objetivo</b><p>Cada jogador recebe uma missão secreta: conquistar certos continentes, um número de territórios ou destruir um exército. Sem missões, vence quem dominar o mundo inteiro.</p></div>
+      <div><b>🗺 Mundo</b><p>Cada semente gera um mundo diferente, com continentes ligados por rotas marítimas (linhas tracejadas). Use a mesma semente para repetir um mapa.</p></div>
+      <div><b>1 · Reforçar</b><p>Você recebe metade dos seus territórios em tropas (mínimo 3) mais o bônus dos continentes que domina, que só pode ser colocado dentro deles. Clique nos seus territórios para posicionar.</p></div>
+      <div><b>2 · Atacar</b><p>Escolha um território seu com 2+ tropas e um vizinho inimigo. Ataque com até 3 dados; o defensor usa até 3. Maior contra maior, empate é da defesa. "Atacar até vencer" repete sozinho.</p></div>
+      <div><b>3 · Remanejar</b><p>Mova tropas entre territórios seus ligados por território seu. Cada tropa só se move uma vez por turno e sempre fica 1 para trás.</p></div>
+      <div><b>🃏 Cartas</b><p>Conquistou pelo menos 1 território no turno? Ganha uma carta. Trocas valem 4, 6, 8, 10, 12, 15, 20… tropas.</p></div>
+      <div><b>🤝 Alianças</b><p>Proponha aliança secreta na aba Social. Aliados não se atacam até alguém romper.</p></div>
+      <div><b>🌐 Online</b><p>Crie a sala e passe o código (ou o link). O anfitrião comanda a partida; quem sai vira CPU.</p></div>
+    </div>
+    <p class="hint">Atalhos: <b>Enter</b> rolar dados · <b>B</b> atacar até vencer · <b>Esc</b> cancelar · <b>Espaço</b> avançar fase · <b>Z</b> desfazer · roda do mouse/pinça para zoom, arrastar para mover o mapa.</p>
+  </div>
 </div>
 
-<script src="app.js"></script>
-<script src="net.js"></script>
+<div class="modal" id="m-menu" hidden>
+  <div class="mcard">
+    <button class="x" data-close>×</button>
+    <h2>Partida</h2>
+    <p class="hint" id="seed-info"></p>
+    <div class="btn-col"><button class="btn" data-close>Voltar ao jogo</button><button class="btn ghost" id="mm-copy">Copiar semente do mapa</button><button class="btn ghost danger" id="mm-quit">Sair da partida</button></div>
+  </div>
+</div>
+
+<div class="modal" id="m-win" hidden>
+  <div class="mcard wide win">
+    <div class="tag" id="win-tag">FIM DA GUERRA</div>
+    <h2 id="win-title"></h2>
+    <p id="win-sub"></p>
+    <div class="win-list" id="win-list"></div>
+    <div class="btn-row center"><button class="btn primary" id="win-again">Nova partida</button><button class="btn ghost" id="win-map">Ver o mapa</button><button class="btn ghost" id="win-menu">Menu</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+
+<script src="js/map.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/net.js"></script>
 </body>
 </html>
